@@ -1,2 +1,28 @@
+dbdata:
+  image: mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=test
+  volumes:
+    - /usr/local/var/docker/mysql/:/var/lib/mysql
+  command: /bin/true
+
+db:
+  image: mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=test
+  volumes_from:
+    - dbdata
+
 server:
-  image: josephsiefers/rubychat
+  image: josephsiefers/chattr-ruby
+  volumes:
+    - .:/usr/src/app
+  links:
+    - db:mysql
+
+bundleinstall:
+  image: ruby
+  volumes:
+    - .:/usr/src/app
+  working_dir: /usr/src/app
+  command: bundle install
