@@ -48,6 +48,7 @@ module Chattr
             user_name = @user_names[ws]
             puts "Disconnecting a device for #{user_name}"
 
+            @user_names.delete(ws)
             @connections[user_name].reject! { |stored_ws| stored_ws == ws }
           end
         end
